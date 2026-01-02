@@ -2,7 +2,7 @@
 
 An AI-driven MERN stack application that generates healthy recipes and tracks nutritional data using Google Gemini 1.5 Flash.
 
-**Live Demo:** [https://ai-recipe-app-peach.vercel.app](https://ai-recipe-app-peach.vercel.app)
+
 
 ## ✨ Features
 - **AI Generation:** Get instant recipes based on ingredients.
