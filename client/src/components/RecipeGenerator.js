@@ -7,6 +7,7 @@ import "../App.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+// YOUR LIVE RENDER BACKEND URL
 const API_BASE_URL = "https://ai-recipe-app-mafv.onrender.com";
 
 const RecipeGenerator = ({ onSaveSuccess }) => {
@@ -24,8 +25,8 @@ const RecipeGenerator = ({ onSaveSuccess }) => {
       });
       setRecipe(response.data);
     } catch (error) {
-      console.error("Generation Error:", error);
-      alert("Error: Could not generate recipe. Check console for details.");
+      console.error("API Error:", error);
+      alert("Error: Could not connect to the AI server.");
     } finally {
       setLoading(false);
     }
@@ -100,7 +101,6 @@ const RecipeGenerator = ({ onSaveSuccess }) => {
               </div>
               <div className="nutrition-box">
                 <h3 style={{ textAlign: 'center' }}>Nutrition</h3>
-                <p style={{ textAlign: 'center' }}>Calories: <strong>{recipe.nutrition.calories}</strong></p>
                 <div style={{ height: "200px" }}>
                   <Bar data={chartData} options={{ maintainAspectRatio: false }} />
                 </div>

@@ -7,8 +7,9 @@ const app = express();
 const ingredientRoutes = require("./routes/ingredientRoutes");
 const recipeRoutes = require("./routes/recipeRoutes");
 
+// UPDATED CORS FOR YOUR NEW VERCEL URL
 app.use(cors({
-  origin: "https://ai-recipe-app-mafv.vercel.app", 
+  origin: "https://ai-recipe-app-peach.vercel.app", 
   methods: ["GET", "POST", "DELETE", "PUT"],
   credentials: true
 }));
@@ -21,7 +22,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
-  res.send("Server is running perfectly on Render!");
+  res.send("Server is running perfectly!");
 });
 
 app.use("/api/ingredients", ingredientRoutes);
