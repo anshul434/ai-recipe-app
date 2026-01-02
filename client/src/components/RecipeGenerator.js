@@ -7,6 +7,8 @@ import "../App.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+const API_BASE_URL = "https://ai-recipe-app-mafv.onrender.com";
+
 const RecipeGenerator = ({ onSaveSuccess }) => {
   const [ingredients, setIngredients] = useState("");
   const [recipe, setRecipe] = useState(null);
@@ -17,12 +19,13 @@ const RecipeGenerator = ({ onSaveSuccess }) => {
     if (!ingredients) return alert("Please enter ingredients!");
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/recipe/generate", {
+      const response = await axios.post(`${API_BASE_URL}/api/recipe/generate`, {
         ingredients: ingredients.split(",").map(i => i.trim()),
       });
       setRecipe(response.data);
     } catch (error) {
-      alert("Error: Could not generate recipe.");
+      console.error("Generation Error:", error);
+      alert("Error: Could not generate recipe. Check console for details.");
     } finally {
       setLoading(false);
     }
@@ -30,7 +33,7 @@ const RecipeGenerator = ({ onSaveSuccess }) => {
 
   const saveToFavorites = async () => {
     try {
-      await axios.post("http://localhost:5000/api/recipe/save", recipe);
+      await axios.post(`${API_BASE_URL}/api/recipe/save`, recipe);
       setShowToast(true);
       if (onSaveSuccess) onSaveSuccess();
       setTimeout(() => setShowToast(false), 3000);
@@ -51,15 +54,12 @@ const RecipeGenerator = ({ onSaveSuccess }) => {
 
   return (
     <div className="generator-wrapper" style={{ position: "relative" }}>
-      
-      {/* 1. SUCCESS TOAST (Always on top) */}
       {showToast && (
         <div className="toast-notification">
           <CheckCircle size={20} /> <span>Recipe added to favorites!</span>
         </div>
       )}
 
-      {/* 2. LOADING OVERLAY (Outside the blurred div so it stays sharp) */}
       {loading && (
         <div className="loading-overlay">
           <div className="loader-content">
@@ -69,7 +69,6 @@ const RecipeGenerator = ({ onSaveSuccess }) => {
         </div>
       )}
 
-      {/* 3. CONTENT CARD (This is the only part that blurs) */}
       <div className={`card ${loading ? "blurred" : ""}`}>
         <h2><Utensils color="#3b82f6" /> AI Recipe Generator</h2>
         
