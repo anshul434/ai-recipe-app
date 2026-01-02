@@ -7,27 +7,19 @@ const app = express();
 const ingredientRoutes = require("./routes/ingredientRoutes");
 const recipeRoutes = require("./routes/recipeRoutes");
 
-// CORS CONFIGURATION
-app.use(cors({
-  origin: "https://ai-recipe-app-peach.vercel.app", // NO trailing slash
-  methods: ["GET", "POST", "DELETE", "PUT"],
-  credentials: true
-}));
-
+// Original Local CORS
+app.use(cors()); 
 app.use(express.json());
 
-// DATABASE CONNECTION
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB Connection Error:", err));
+  .then(() => console.log("MongoDB Connected Locally"))
+  .catch((err) => console.log(err));
 
-// HEALTH CHECK ROUTE
 app.get("/", (req, res) => {
-  res.send("Smart Chef AI Backend is Live!");
+  res.send("Server is running on Localhost");
 });
 
-// ROUTES
 app.use("/api/ingredients", ingredientRoutes);
 app.use("/api/recipe", recipeRoutes);
 
