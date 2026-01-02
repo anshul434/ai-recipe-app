@@ -7,7 +7,7 @@ import "../App.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// YOUR LIVE RENDER BACKEND URL
+// LIVE RENDER BACKEND URL
 const API_BASE_URL = "https://ai-recipe-app-mafv.onrender.com";
 
 const RecipeGenerator = ({ onSaveSuccess }) => {
@@ -25,8 +25,8 @@ const RecipeGenerator = ({ onSaveSuccess }) => {
       });
       setRecipe(response.data);
     } catch (error) {
-      console.error("API Error:", error);
-      alert("Error: Could not connect to the AI server.");
+      console.error("Generation Error:", error.response?.data || error.message);
+      alert("Error: Could not generate recipe.");
     } finally {
       setLoading(false);
     }
@@ -34,12 +34,16 @@ const RecipeGenerator = ({ onSaveSuccess }) => {
 
   const saveToFavorites = async () => {
     try {
-      await axios.post(`${API_BASE_URL}/api/recipe/save`, recipe);
+      // Sending data to live backend
+      const response = await axios.post(`${API_BASE_URL}/api/recipe/save`, recipe);
+      console.log("Save Success:", response.data);
       setShowToast(true);
       if (onSaveSuccess) onSaveSuccess();
       setTimeout(() => setShowToast(false), 3000);
     } catch (err) {
-      alert("Failed to save recipe.");
+      // Check F12 Console for this output if it fails
+      console.error("Save Error Detail:", err.response?.data || err.message);
+      alert(`Failed to save: ${err.response?.data?.message || "Check Console"}`);
     }
   };
 
